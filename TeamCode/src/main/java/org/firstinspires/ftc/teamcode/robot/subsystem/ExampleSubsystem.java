@@ -19,7 +19,7 @@ public class ExampleSubsystem {
     private Servo myServo;
 
     //Define positions and other variables of the subsystem
-    private double downPosition = 0.1;
+//    private double downPosition = 0.1;
     private double upPosition = 0.5;
 
     /**
