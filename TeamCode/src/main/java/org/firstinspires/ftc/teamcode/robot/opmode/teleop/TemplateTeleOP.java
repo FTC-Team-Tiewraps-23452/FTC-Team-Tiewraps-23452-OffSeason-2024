@@ -84,7 +84,7 @@ public class TemplateTeleOP extends OpMode
      */
     @Override
     public void loop() {
-
+       exampleSubsystem.loop();
         /*
          * Execute the functions of the example subsystem based on controller input
          */

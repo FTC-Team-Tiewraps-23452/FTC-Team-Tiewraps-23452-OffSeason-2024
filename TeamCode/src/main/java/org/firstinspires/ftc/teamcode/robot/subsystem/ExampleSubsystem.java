@@ -1,9 +1,15 @@
 package org.firstinspires.ftc.teamcode.robot.subsystem;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
+
+import org.firstinspires.ftc.robotcore.external.navigation.CurrentUnit;
+import org.firstinspires.ftc.teamcode.lib.Hardware.DcMotorImplEx;
+
+import java.util.Base64;
 
 
 /**
@@ -15,12 +21,15 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class ExampleSubsystem {
 
     //Declare motor and servo objects
-    private  DcMotor myMotor;
+    private DcMotorEx myMotor;
+    private Base64.Encoder myMotorEncoder;
     private Servo myServo;
 
     //Define positions and other variables of the subsystem
-//    private double downPosition = 0.1;
+    private double downPosition = 0.1;
     private double upPosition = 0.5;
+    private double motorSpeed;
+
 
     /**
      * This is the constructor of the subsystem
@@ -33,13 +42,15 @@ public class ExampleSubsystem {
      *                    on the actual robot
      */
     public ExampleSubsystem(HardwareMap hardwareMap){
+
+
         /*
         * This lines of code links the DcMotor 'myMotor' to the port on the control/expansion hub
         * labeled "motor1"
         * This 'labeling' can be done on the Driver Station by clicking on the three dots
         * in the upper right corner and then going to 'Configure Robot'
          */
-        myMotor = hardwareMap.get(DcMotor.class, "motor1");
+        myMotor = hardwareMap.get(DcMotorEx.class, "motor1");
 
         /*
         * Normally a DC motors runs in the clockwise direction for positive values
@@ -56,6 +67,7 @@ public class ExampleSubsystem {
 
         // Servos can also be extracted from the hardwareMap similar to DC motors
         myServo = hardwareMap.get(Servo.class, "servo1");
+
     }
 
     /*
@@ -66,7 +78,14 @@ public class ExampleSubsystem {
     * setMotorSpeed
      */
 
+    public void loop(){
+        if (currentCheck()){
+            setMotorSpeed(0);
+        } else {
+            setMotorSpeed(motorSpeed);
+        }
 
+    }
     /**
      * Example of a function which moves a servo to a certain position
      */
@@ -89,7 +108,13 @@ public class ExampleSubsystem {
      *              1 corresponds to full power forwards
      */
     public void setMotorSpeed(double speed){
-        myMotor.setPower(speed);
+       motorSpeed = speed;
     }
+
+
+    public boolean currentCheck(){
+        return (myMotor.getCurrent(CurrentUnit.AMPS) > 30);
+    }
+
 
 }
